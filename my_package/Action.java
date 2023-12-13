@@ -7,7 +7,6 @@ public class Action {
         this.subject = subject;
         this.object = object;
         this.description = description;
-        if (description == null || description.isEmpty()) throw new NullActionException("The description is empty.");
     }
 
     public Action(Characterable subject, String description) {
@@ -31,15 +30,9 @@ public class Action {
         final int prime = 31;
         int total = prime;
 
-        total = total * prime + subject.hashCode();
-        total = total * prime + object.hashCode();
-        total = total * prime + description.hashCode();
+        total = total*prime + subject.hashCode();
+        total = total*prime + object.hashCode();
+        total = total*prime + description.hashCode();
         return total;
-    }
-}
-
-class NullActionException extends RuntimeException {
-    public NullActionException(String message) {
-        super(message);
     }
 }
