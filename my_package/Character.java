@@ -1,5 +1,3 @@
-import java.time.Duration;
-
 public abstract class Character implements Characterable {
     private String name;
     private Gender gender;
@@ -33,12 +31,5 @@ public abstract class Character implements Characterable {
     }
 
     public void stayAt(Location location) {
-    }
-
-    public void walk(Location location, Duration duration) {
-    }
-
-    public void able(Action action) {
-        ActionQueue.add(this, action.object, "is able to " + action.description);
     }
 }
