@@ -1,4 +1,3 @@
-import java.io.Console;
 import java.lang.reflect.Field;
 import java.time.Duration;
 
@@ -6,11 +5,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-
-        Console cli = System.console();
-        cli.readPassword();
-        cli.readLine();
-        cli.printf("Welcome");
 
         Location street = new Location("Street");
         Location roof = new Location("Roof"){
