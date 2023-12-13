@@ -1,12 +1,10 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class Location implements Characterable{
-
+public class Location {
     private final String name;
     private String description = "";
     protected Set<Person> people = new HashSet<>();
-    private boolean inside = false;
 
 
     public Location(String name) {
@@ -45,8 +43,6 @@ public class Location implements Characterable{
         return sb.toString();
     }
 
-    public void specialEvent(){}
-
     @Override
     public String toString() {
         return name;
@@ -70,26 +66,8 @@ public class Location implements Characterable{
         int total = prime;
 
         total = total * prime + name.hashCode();
+        total = total * prime + people.hashCode();
         total = total * prime + description.hashCode();
         return total;
-    }
-
-    @Override
-    public void setGender(Gender gender) {
-    }
-
-    @Override
-    public Gender getGender() {
-        return Gender.NONE;
-    }
-
-    public static class Home extends Location {
-        public Home() {
-            super("Home");
-        }
-        @Override
-        public void specialEvent(){
-            ActionQueue.add(this, "celebrates Christmas");
-        }
     }
 }
