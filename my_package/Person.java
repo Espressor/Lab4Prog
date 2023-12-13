@@ -1,6 +1,3 @@
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,15 +60,7 @@ public abstract class Person extends Character {
     }
 
     public void say(String text, Emotion emotion) {
-        ActionQueue.add(this, "says" + emotion + ": " + text);
-    }
-
-    public void order(String text, Character character) {
-        ActionQueue.add(this, "orders " + character + ": " + text);
-    }
-
-    public void ask(String text, Character character) {
-        ActionQueue.add(this, "asks " + character + ": " + text);
+        ActionQueue.add(this, "says" + Emotion.getString(emotion) + ": " + text);
     }
 
     public void jumpTo(Characterable character) {
@@ -90,27 +79,24 @@ public abstract class Person extends Character {
         ActionQueue.add(this, character, "hugs");
     }
 
-    public void remember(String keyword) throws MemoryNotFoundException {
+    public void remember(String keyword) {
         for (Memory memory : memories)
             if (memory.getKeyword().equals(keyword)) {
                 ActionQueue.add(this, memory, "remembers");
                 return;
             }
-        throw new MemoryNotFoundException("Memory not found.", keyword);
+        ActionQueue.add(this, new Memory(), "remembers");
     }
 
-    public void addThought(String description, Thought.ThoughtType type) {
-        Thought thought = new Thought(type, description);
+    public void addThought(Thought thought) {
         thoughts.add(thought);
-        ActionQueue.add(this, "thinks that " + thought);
     }
 
     public boolean removeThought(Thought thought) {
         return thoughts.remove(thought);
     }
 
-    public void addMemory(String description, String keyword) {
-        Memory memory = new Memory(description, keyword);
+    public void addMemory(Memory memory) {
         memories.add(memory);
     }
 
@@ -153,11 +139,6 @@ public abstract class Person extends Character {
         return sb.toString();
     }
 
-    public void fall(Location ground){
-        setLocation(ground);
-        ActionQueue.add(this, ground, "falls to");
-    }
-
     @Override
     public void setLocation(Location location) {
         currentLocation = location;
@@ -180,10 +161,6 @@ public abstract class Person extends Character {
         ActionQueue.add(this, location, "stays at location");
     }
 
-    @Override
-    public void walk(Location location, Duration duration) {
-        ActionQueue.add(this, location, "walked for " + duration.toMillis() + " millis at location");
-    }
 
     @Override
     public String toString() {
@@ -222,114 +199,4 @@ public abstract class Person extends Character {
         return total;
     }
 
-
-    public class Thought {
-        protected ArrayList<Object> associations = new ArrayList<>();
-        private String description;
-        private final ThoughtType type;
-
-        public Thought(ThoughtType type) {
-            this(type, "emptiness...");
-        }
-
-        public Thought(ThoughtType type, String description) {
-            this.type = type;
-            this.description = description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public ThoughtType getType() {
-            return type;
-        }
-
-        @Override
-        public String toString() {
-            return description;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || obj.getClass() != this.getClass()) return false;
-
-            Thought thght = (Thought) obj;
-            return associations.equals(thght.associations) && description.equals(thght.description) && type == thght.type;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int total = prime;
-
-            total = total * 31 + associations.hashCode();
-            total = total * 31 + description.hashCode();
-            total = total * 31 + type.hashCode();
-            return total;
-        }
-
-        public enum ThoughtType {
-            NONE,
-            INTELLECT,
-            PSYCHE,
-            PHILOSOPHY,
-            EGO
-        }
-    }
-
-    public class Memory extends Thought {
-        private String keyword;
-
-        public Memory() {
-            this("they can't remember anything", "empty");
-        }
-
-        public Memory(String description, String keyword) {
-            super(ThoughtType.PSYCHE, description);
-            this.keyword = keyword;
-        }
-
-        public void setKeyword(String keyword) {
-            this.keyword = keyword;
-        }
-
-        public String getKeyword() {
-            return keyword;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int total = prime;
-
-            total = total * prime + keyword.hashCode();
-            total = total * prime + getDescription().hashCode();
-            return total;
-        }
-    }
 }
-
-class MemoryNotFoundException extends Exception {
-    private final String keyword;
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public MemoryNotFoundException(String message, String keyword) {
-        super(message);
-        this.keyword = keyword;
-    }
-}
-
-// локальный класс +
-// (про классы) +
-// Залить на хелиос +
-// рефлексия +
-// uml -
