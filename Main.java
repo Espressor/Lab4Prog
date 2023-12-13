@@ -8,15 +8,15 @@ public class Main {
         Location street = new Location("street");
         Location home = new Location("home");
 
-        Adult mother = new Adult("Mother", Character.Gender.FEMALE);
-        Adult father = new Adult("Father", Character.Gender.MALE);
+        Adult mother = new Adult("Mother", Gender.FEMALE);
+        Adult father = new Adult("Father", Gender.MALE);
 
         Hallucination Karlson = new Hallucination("Karlson");
-        Child theKid = new Child("Kid", Character.Gender.MALE);
-        Child Bosse = new Child("Bosse", Character.Gender.MALE);
-        Child Betan = new Child("Betan", Character.Gender.MALE);
+        Child theKid = new Child("Kid", Gender.MALE);
+        Child Bosse = new Child("Bosse", Gender.MALE);
+        Child Betan = new Child("Betan", Gender.MALE);
 
-        Adult stranger = new Adult("many other strangers", Character.Gender.THEY);
+        Adult stranger = new Adult("many other strangers", Gender.THEY);
         Crowd gangstas = new Crowd(new Person[]{theKid, mother, father, Bosse, Betan, stranger});
 
         Item request = new Item("request", Karlson);
